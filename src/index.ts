@@ -20,24 +20,13 @@ const main = async () => {
   const eventFilter = (r.records ?? []).map(
     r => `/restapi/v1.0/account/~/device/${r.id}/emergency-address`
   );
-  eventFilter.push('/restapi/v1.0/account/~/extension/~/message-store');
+  eventFilter.push('/restapi/v1.0/account/~/extension/~/presence');
   console.log(eventFilter);
   const r2 = await pubNubExtension.subscribe(eventFilter, (event: any) => {
     console.log(JSON.stringify(event, null, 2));
   });
   console.log(JSON.stringify(r2.subscriptionInfo, null, 2));
-  await waitFor({interval: 10000});
-  await await rc
-    .restapi()
-    .account()
-    .extension()
-    .companyPager()
-    .post({
-      from: {extensionNumber: '11115'},
-      to: [{extensionNumber: '11115'}], // send pager to oneself
-      text: 'Hello world',
-    });
-  await waitFor({interval: 3600000}); // 1 hour
+  await waitFor({interval: 36000000}); // 10 hours
   await rc.revoke();
 };
 
